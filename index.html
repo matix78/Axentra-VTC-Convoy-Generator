@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <title>AXENTRA CONVOY GENERATOR</title>
     <style>
+        * {
+            font-weight: bold;
+        }
+
         body {
             overflow-x: hidden;
             word-break: break-word;
@@ -34,13 +38,14 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background: white;
+            background: rgb(59, 59, 59);
         }
 
         label {
             display: block;
             margin-top: 10px;
             font-weight: bold;
+            color: white;
         }
 
         input,
@@ -54,8 +59,18 @@
             box-sizing: border-box;
             white-space: normal;
             overflow-wrap: break-word;
+            transition: all 0.3s ease-in-out;
         }
 
+        input::placeholder,
+        textarea::placeholder {
+            font-weight: bold;
+            color: #888;
+        }
+
+        select {
+            transition: all 0.3s ease-in-out;
+        }
 
         .preview {
             background: #2c2f33;
@@ -90,7 +105,6 @@
             line-height: 1.2;
         }
 
-
         .embed-field span {
             display: inline;
             white-space: normal;
@@ -107,28 +121,30 @@
 
         .copy-btn {
             margin-top: 10px;
-            padding: 10px 20px;
+            font-weight: bolder;
+            padding: 15px 20px;
+            width: 100%;
             background: #7289da;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
         }
 
         .copy-btn:hover {
-            background: #5b6eae;
+            transform: scale(1.02);
+            background: #40563d;
         }
 
-        #title-main {
-            color: #40563d;
-        }
-
-        textarea {
-            height: 50px;
-            resize: none;
-            overflow: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        input[type="text"]:hover,
+        input[type="color"]:hover,
+        input[type="date"]:hover,
+        input[type="time"]:hover,
+        textarea:hover,
+        select:hover {
+            transform: scale(1.02);
+            border-color: #40563d;
         }
 
         .checkbox-container {
@@ -150,6 +166,12 @@
             border-radius: 4px;
             background: white;
             position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .checkbox-container input[type="checkbox"]:hover+.checkbox-custom {
+            transform: scale(1.2);
+            border-color: #40563d;
         }
 
         .checkbox-container input[type="checkbox"]:checked+.checkbox-custom::after {
@@ -167,21 +189,19 @@
             height: 30px;
             padding: 0;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
         }
 
-        @media only screen and (max-width: 768px) {
-            body>* {
-                display: none;
-            }
+        #title-main {
+            color: #40563d;
+        }
 
-            body::before {
-                content: "Ta strona działa tylko na komputerze!";
-                display: block;
-                text-align: center;
-                margin-top: 50px;
-                font-size: 24px;
-                color: red;
-            }
+        textarea {
+            height: 50px;
+            resize: none;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
     </style>
 </head>
@@ -191,13 +211,13 @@
     <div class="container">
         <div class="form">
             <label>Nazwa Konwoju</label>
-            <input type="text" id="title" placeholder="Pink Ribbon VTC - September Convoy">
+            <input type="text" id="title" placeholder="Axentra VTC August Convoy">
             <label>Kolor embeda</label>
             <input type="color" id="color" value="#000000">
             <label>Data</label>
             <input type="date" id="date" placeholder="12-09-2025">
             <label>Serwer</label>
-            <input type="text" id="server" placeholder="EVENT SERVER">
+            <input type="text" id="server" placeholder="SIM 2">
             <label class="checkbox-container">
                 Czy Promods? (Proszę zaznaczyć kratke jeśli jest)
                 <input type="checkbox" id="promods">
@@ -209,7 +229,7 @@
                 <option value="ATS">ATS</option>
             </select>
             <label>Organizator</label>
-            <input type="text" id="org" placeholder="Brak danych">
+            <input type="text" id="org" placeholder="Axentra VTC">
             <label>Wymagane DLC (Przytrzymaj Ctrl aby zaznaczyć wiele opcji)</label>
             <select id="dlc" multiple size="3">
                 <option value="Going East">Going East</option>
@@ -223,21 +243,21 @@
                 <option value="Greece">Greece</option>
             </select>
             <label>Komunikacja</label>
-            <input type="text" id="comm" placeholder="https://discord.gg/prvtc">
+            <input type="text" id="comm" value="Nie dotyczy | Not applicable">
             <label>Godzina spotkania</label>
-            <input type="time" id="meetup" placeholder="20:00">
+            <input type="time" id="meetup">
             <label>Godzina wyjazdu</label>
-            <input type="time" id="departure" placeholder="21:00">
+            <input type="time" id="departure">
             <label>Startowa lokalizacja</label>
             <input type="text" id="start" placeholder="Hamburg (Posped - Parking area in front of Kaarfor)">
             <label>Końcowa lokalizacja</label>
             <input type="text" id="end" placeholder="Amsterdam (LKW)">
             <label>Slot</label>
-            <input type="text" id="slot" placeholder="A1">
+            <input type="text" id="slot" value="Nie dotyczy | Not applicable">
             <label>Link do wydarzenia TruckerMP</label>
             <input type="text" id="link_tmp" placeholder="https://truckersmp.com/events/">
             <label>Dodatkowe informacje</label>
-            <textarea id="additional" placeholder="Brak | None"></textarea>
+            <textarea id="additional">Brak | None</textarea>
             <label>Linki do zdjęć (oddzielone przecinkiem)</label>
             <textarea id="images" placeholder="https://link1.png,https://link2.png"></textarea>
             <button class="copy-btn" onclick="copyEmbed()">Skopiuj</button>
@@ -270,7 +290,7 @@
     </div>
 
     <script>
-        const fields = ['title', 'color', 'date', 'server', 'promods', 'org', 'game', 'dlc', 'comm', 'meetup', 'departure', 'start', 'end', 'slot', 'additional', 'images'];
+        const fields = ['title', 'color', 'link_tmp', 'date', 'server', 'promods', 'org', 'game', 'dlc', 'comm', 'meetup', 'departure', 'start', 'end', 'slot', 'additional', 'images'];
 
         fields.forEach(id => {
             const input = document.getElementById(id);
@@ -288,7 +308,7 @@
             document.getElementById('p-date').innerText = document.getElementById('date').value;
             document.getElementById('p-server').innerText = document.getElementById('server').value;
             document.getElementById('p-promods').innerText =
-                document.getElementById('promods').checked ? 'TAK' : 'NIE';
+                document.getElementById('promods').checked ? 'TAK | YES' : 'NIE | NO';
             document.getElementById('p-game').innerText = document.getElementById('game').value;
             const dlcSelect = document.getElementById('dlc');
             const selectedDLC = Array.from(dlcSelect.selectedOptions).map(opt => opt.value).join(', ');
@@ -306,10 +326,17 @@
             const images = document.getElementById('images').value.split(",");
             const tmpLink = document.getElementById('link_tmp').value.trim();
             if (tmpLink) {
-                const linkDiv = document.createElement('div');
-                linkDiv.innerHTML = `<a href="${tmpLink}" target="_blank" style="color:#00afff;">Event Link</a>`;
-                imagesContainer.appendChild(linkDiv);
+                if (tmpLink.startsWith("https://truckersmp.com/events/")) {
+                    const linkDiv = document.createElement('div');
+                    linkDiv.style.marginTop = "20px";
+                    linkDiv.innerHTML = `<a href="${tmpLink}" target="_blank" style="color:#00afff;">Event Link</a>`;
+                    imagesContainer.appendChild(linkDiv);
+                } else {
+                    alert("❌ Link musi zaczynać się od https://truckersmp.com/events/");
+                    document.getElementById('link_tmp').value = "";
+                }
             }
+
 
 
             images.forEach(url => {
@@ -332,7 +359,7 @@
                 document.getElementById('color').value,
                 document.getElementById('date').value,
                 document.getElementById('server').value,
-                document.getElementById('promods').checked ? 'TAK' : 'NIE',
+                document.getElementById('promods').checked ? 'TAK | YES' : 'NIE | NO',
                 document.getElementById('org').value,
                 document.getElementById('game').value,
                 Array.from(document.getElementById('dlc').selectedOptions).map(opt => opt.value).join(', '),
@@ -348,7 +375,7 @@
 
             const tmpLink = document.getElementById('link_tmp').value.trim();
             if (tmpLink) {
-                fields.push(`[Event Link](${tmpLink})`);
+                fields.push(`${tmpLink}`);
             }
 
             const data = fields.join(';');
