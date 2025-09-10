@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AXENTRA CONVOY GENERATOR</title>
+    <style>
+        body {
+            overflow-x: hidden;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            font-family: Arial, sans-serif;
+            background: #838383;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form,
+        .preview {
+            flex: 1 1 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+
+        .preview {
+            background: #2c2f33;
+            color: white;
+            position: relative;
+            border-radius: 10px;
+            padding: 10px 10px 10px 20px;
+            max-width: 500px;
+        }
+
+        .color-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            border-radius: 10px 0 0 10px;
+            background: #000000;
+        }
+
+        .embed-content {
+            margin-left: 15px;
+        }
+
+        .embed-content h2 {
+            margin-top: 0;
+            color: white;
+        }
+
+        .embed-field {
+            margin: 2px 0;
+            line-height: 1.2;
+        }
+
+
+        .embed-field span {
+            display: inline;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        #p-images img {
+            max-width: 100%;
+            margin-top: 5px;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #7289da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #5b6eae;
+        }
+
+        #title-main {
+            color: #40563d;
+        }
+
+        textarea {
+            height: 50px;
+            resize: none;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #7289da;
+            border-radius: 4px;
+            background: white;
+            position: relative;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked+.checkbox-custom::after {
+            content: '✔';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #7289da;
+            font-size: 16px;
+        }
+
+        input[type="color"] {
+            border: 2px solid #7289da;
+            border-radius: 5px;
+            height: 30px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 768px) {
+            body>* {
+                display: none;
+            }
+
+            body::before {
+                content: "Ta strona działa tylko na komputerze!";
+                display: block;
+                text-align: center;
+                margin-top: 50px;
+                font-size: 24px;
+                color: red;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title-main">AXENTRA CONVOY GENERATOR</h1>
+    <div class="container">
+        <div class="form">
+            <label>Nazwa Konwoju</label>
+            <input type="text" id="title" placeholder="Pink Ribbon VTC - September Convoy">
+            <label>Kolor embeda</label>
+            <input type="color" id="color" value="#000000">
+            <label>Data</label>
+            <input type="date" id="date" placeholder="12-09-2025">
+            <label>Serwer</label>
+            <input type="text" id="server" placeholder="EVENT SERVER">
+            <label class="checkbox-container">
+                Czy Promods? (Proszę zaznaczyć kratke jeśli jest)
+                <input type="checkbox" id="promods">
+                <span class="checkbox-custom"></span>
+            </label>
+            <label>Gra</label>
+            <select id="game">
+                <option value="ETS2">ETS2</option>
+                <option value="ATS">ATS</option>
+            </select>
+            <label>Organizator</label>
+            <input type="text" id="org" placeholder="Brak danych">
+            <label>Wymagane DLC (Przytrzymaj Ctrl aby zaznaczyć wiele opcji)</label>
+            <select id="dlc" multiple size="3">
+                <option value="Going East">Going East</option>
+                <option value="Beyond the Baltic Sea">Beyond the Baltic Sea</option>
+                <option value="Scandynavia">Scandynavia</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Italia">Italia</option>
+                <option value="Vive la France">Vive la France</option>
+                <option value="Road to the Black Sea">Road to the Black Sea</option>
+                <option value="West Balkans">West Balkans</option>
+                <option value="Greece">Greece</option>
+            </select>
+            <label>Komunikacja</label>
+            <input type="text" id="comm" placeholder="https://discord.gg/prvtc">
+            <label>Godzina spotkania</label>
+            <input type="time" id="meetup" placeholder="20:00">
+            <label>Godzina wyjazdu</label>
+            <input type="time" id="departure" placeholder="21:00">
+            <label>Startowa lokalizacja</label>
+            <input type="text" id="start" placeholder="Hamburg (Posped - Parking area in front of Kaarfor)">
+            <label>Końcowa lokalizacja</label>
+            <input type="text" id="end" placeholder="Amsterdam (LKW)">
+            <label>Slot</label>
+            <input type="text" id="slot" placeholder="A1">
+            <label>Link do wydarzenia TruckerMP</label>
+            <input type="text" id="link_tmp" placeholder="https://truckersmp.com/events/">
+            <label>Dodatkowe informacje</label>
+            <textarea id="additional" placeholder="Brak | None"></textarea>
+            <label>Linki do zdjęć (oddzielone przecinkiem)</label>
+            <textarea id="images" placeholder="https://link1.png,https://link2.png"></textarea>
+            <button class="copy-btn" onclick="copyEmbed()">Skopiuj</button>
+        </div>
+
+        <div class="preview" id="preview">
+            <div class="color-bar" id="color-bar"></div>
+            <div class="embed-content">
+                <h2 id="p-title">Nazwa konwoju</h2>
+                <div class="embed-field"><strong>DATA | DATE:</strong> <span id="p-date"></span></div>
+                <div class="embed-field"><strong>SERVER:</strong> <span id="p-server"></span></div>
+                <div class="embed-field"><strong>PROMODS:</strong> <span id="p-promods"></span></div>
+                <div class="embed-field"><strong>GRA | GAME:</strong> <span id="p-game"></span></div>
+                <div class="embed-field"><strong>WYMAGANE DLC | DLC REQUIRED:</strong> <span id="p-dlc"></span></div>
+                <div class="embed-field"><strong>KOMUNIKACJA | COMMUNICATION:</strong> <span id="p-comm"></span></div>
+                <div class="embed-field"><strong>GODZINA ZBIÓRKI | MEETUP TIME:</strong> <span id="p-meetup"></span>
+                </div>
+                <div class="embed-field"><strong>GODZINA WYJAZDU | DEPARTURE TIME:</strong> <span
+                        id="p-departure"></span></div>
+                <div class="embed-field"><strong>LOKALIZACJA POCZĄTKOWA | START LOCATION:</strong> <span
+                        id="p-start"></span></div>
+                <div class="embed-field"><strong>LOKALIZACJA KOŃCOWA | END LOCATION:</strong> <span id="p-end"></span>
+                </div>
+                <div class="embed-field"><strong>SLOT:</strong> <span id="p-slot"></span></div>
+                <div class="embed-field"><strong>DODATKOWE INFORMACJE | ADDITIONAL INFORMATION:</strong> <span
+                        id="p-additional"></span></div>
+                <div class="embed-field" id="p-images"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fields = ['title', 'color', 'date', 'server', 'promods', 'org', 'game', 'dlc', 'comm', 'meetup', 'departure', 'start', 'end', 'slot', 'additional', 'images'];
+
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            input.addEventListener('input', updatePreview);
+        });
+
+        function updatePreview() {
+            const titleInput = document.getElementById('title').value;
+            const orgInput = document.getElementById('org').value;
+            const titleFinal = titleInput
+                ? `${titleInput}. Organized by ${orgInput || 'Brak danych'}.`
+                : 'Nazwa konwoju';
+            document.getElementById('p-title').innerText = titleFinal;
+            document.getElementById('color-bar').style.background = document.getElementById('color').value;
+            document.getElementById('p-date').innerText = document.getElementById('date').value;
+            document.getElementById('p-server').innerText = document.getElementById('server').value;
+            document.getElementById('p-promods').innerText =
+                document.getElementById('promods').checked ? 'TAK' : 'NIE';
+            document.getElementById('p-game').innerText = document.getElementById('game').value;
+            const dlcSelect = document.getElementById('dlc');
+            const selectedDLC = Array.from(dlcSelect.selectedOptions).map(opt => opt.value).join(', ');
+            document.getElementById('p-dlc').innerText = selectedDLC;
+            document.getElementById('p-comm').innerText = document.getElementById('comm').value;
+            document.getElementById('p-meetup').innerText = document.getElementById('meetup').value;
+            document.getElementById('p-departure').innerText = document.getElementById('departure').value;
+            document.getElementById('p-start').innerText = document.getElementById('start').value;
+            document.getElementById('p-end').innerText = document.getElementById('end').value;
+            document.getElementById('p-slot').innerText = document.getElementById('slot').value;
+            document.getElementById('p-additional').innerText = document.getElementById('additional').value;
+
+            const imagesContainer = document.getElementById('p-images');
+            imagesContainer.innerHTML = "";
+            const images = document.getElementById('images').value.split(",");
+            const tmpLink = document.getElementById('link_tmp').value.trim();
+            if (tmpLink) {
+                const linkDiv = document.createElement('div');
+                linkDiv.innerHTML = `<a href="${tmpLink}" target="_blank" style="color:#00afff;">Event Link</a>`;
+                imagesContainer.appendChild(linkDiv);
+            }
+
+
+            images.forEach(url => {
+                url = url.trim();
+                if (url) {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    imagesContainer.appendChild(img);
+                }
+            });
+        }
+
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            document.body.innerHTML = "<h1>Ta strona działa tylko na komputerze!</h1>";
+        }
+
+        function copyEmbed() {
+            const fields = [
+                document.getElementById('title').value,
+                document.getElementById('color').value,
+                document.getElementById('date').value,
+                document.getElementById('server').value,
+                document.getElementById('promods').checked ? 'TAK' : 'NIE',
+                document.getElementById('org').value,
+                document.getElementById('game').value,
+                Array.from(document.getElementById('dlc').selectedOptions).map(opt => opt.value).join(', '),
+                document.getElementById('comm').value,
+                document.getElementById('meetup').value,
+                document.getElementById('departure').value,
+                document.getElementById('start').value,
+                document.getElementById('end').value,
+                document.getElementById('slot').value,
+                document.getElementById('additional').value,
+                document.getElementById('images').value
+            ];
+
+            const tmpLink = document.getElementById('link_tmp').value.trim();
+            if (tmpLink) {
+                fields.push(`[Event Link](${tmpLink})`);
+            }
+
+            const data = fields.join(';');
+            const encoded = btoa(unescape(encodeURIComponent(data)));
+            navigator.clipboard.writeText(encoded).then(() => alert('Skopiowano do schowka!'));
+        }
+
+        updatePreview();
+    </script>
+</body>
+
+</html>
