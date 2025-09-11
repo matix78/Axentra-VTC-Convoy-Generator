@@ -350,7 +350,8 @@
         }
 
         if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            alert("Ta strona działa tylko na komputerze, nie jest wpierana na telefony!");
+            alert("Ta strona działa tylko na komputerze, nie jest wpierana na urządzenia mobilne!");
+            document.querySelector('body').style.display = 'none';
         }
 
         function copyEmbed() {
